@@ -1,24 +1,22 @@
-import { ProductCard } from './features/product-catalog/components/ProductCard';
-import type { Product } from './shared/types';
-
-const sampleProduct: Product = {
-  id: 'p-1',
-  name: 'Wireless Headphones',
-  price: 59.9,
-  image: 'https://picsum.photos/seed/headphones/400/300',
-  description: 'Noise-cancelling over-ear headphones with 30h battery.',
-};
+import { ProductCatalog } from '@/features/product-catalog/ProductCatalog';
+import type { Product } from '@/shared/types';
 
 function App() {
+  const handleAddToCart = (product: Product) => {
+    console.log('Add to cart:', product);
+  };
+
   return (
-    <main className="min-h-screen bg-gray-100 p-8 flex items-center justify-center">
-      <div className="w-full max-w-sm">
-        <ProductCard
-          product={sampleProduct}
-          onAddToCart={(p) => console.log('Add to cart:', p)}
-        />
-      </div>
-    </main>
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-white shadow">
+        <div className="mx-auto max-w-6xl px-6 py-4">
+          <h1 className="text-2xl font-bold text-gray-900">Simple Product Shop</h1>
+        </div>
+      </header>
+      <main className="mx-auto max-w-6xl px-6 py-8">
+        <ProductCatalog onAddToCart={handleAddToCart} />
+      </main>
+    </div>
   );
 }
 

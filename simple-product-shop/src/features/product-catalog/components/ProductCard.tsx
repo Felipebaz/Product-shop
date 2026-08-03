@@ -1,6 +1,6 @@
-import type { Product } from '../../../shared/types';
-import { formatPrice } from '../../../shared/utils';
-import { Button } from '../../../shared/components';
+import type { Product } from '@/shared/types';
+import { formatPrice } from '@/shared/utils';
+import { Button } from '@/shared/components';
 
 interface ProductCardProps {
   product: Product;

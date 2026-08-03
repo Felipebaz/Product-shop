@@ -1,6 +1,6 @@
-import type { Product } from '../../shared/types';
-import { products } from '../../shared/data/products';
-import { ProductCard } from './components/ProductCard';
+import type { Product } from '@/shared/types';
+import { products } from '@/shared/data/products';
+import { ProductCard } from '@/features/product-catalog/components/ProductCard';
 
 interface ProductCatalogProps {
   onAddToCart: (product: Product) => void;

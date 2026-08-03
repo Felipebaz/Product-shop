@@ -1,30 +1,32 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { Product } from '../../shared/types';
+import type { Product } from '@/shared/types';
 
-const mockProducts: Product[] = [
-  {
-    id: 'a',
-    name: 'Alpha Widget',
-    price: 10,
-    image: '/img/a.png',
-    description: 'First test product.',
-  },
-  {
-    id: 'b',
-    name: 'Beta Gadget',
-    price: 20,
-    image: '/img/b.png',
-    description: 'Second test product.',
-  },
-];
+const { mockProducts } = vi.hoisted(() => ({
+  mockProducts: [
+    {
+      id: 'a',
+      name: 'Alpha Widget',
+      price: 10,
+      image: '/img/a.png',
+      description: 'First test product.',
+    },
+    {
+      id: 'b',
+      name: 'Beta Gadget',
+      price: 20,
+      image: '/img/b.png',
+      description: 'Second test product.',
+    },
+  ] satisfies Product[],
+}));
 
-vi.mock('../../shared/data/products', () => ({
+vi.mock('@/shared/data/products', () => ({
   products: mockProducts,
 }));
 
-import { ProductCatalog } from './ProductCatalog';
+import { ProductCatalog } from '@/features/product-catalog/ProductCatalog';
 
 describe('ProductCatalog', () => {
   it('renders the "Products" heading', () => {
