@@ -4,7 +4,9 @@
       "Bash(export PATH=\"$PATH:/c/Users/Usuario/AppData/Roaming/npm\")",
       "Bash(pnpm install *)",
       "Bash(pnpm build *)",
-      "Bash(pnpm test:run CartItem)"
+      "Bash(pnpm test:run CartItem)",
+      "Bash(pnpm test:run CartContext)",
+      "Bash(pnpm test:run ProductCard)"
     ]
   }
 }

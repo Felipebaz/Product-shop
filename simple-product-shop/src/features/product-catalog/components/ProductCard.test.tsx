@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { Product } from '@/shared/types';
 import { ProductCard } from '@/features/product-catalog/components/ProductCard';
@@ -40,5 +40,26 @@ describe('ProductCard', () => {
     await userEvent.click(screen.getByRole('button', { name: /add to cart/i }));
     expect(onAddToCart).toHaveBeenCalledTimes(1);
     expect(onAddToCart).toHaveBeenCalledWith(product);
+  });
+
+  describe('added feedback', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('shows "Added!" for 1.5s after clicking, then reverts to "Add to Cart"', () => {
+      vi.useFakeTimers();
+      render(<ProductCard product={product} onAddToCart={() => {}} />);
+
+      fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+      expect(screen.getByRole('button', { name: /added/i })).toBeInTheDocument();
+
+      act(() => {
+        vi.advanceTimersByTime(1500);
+      });
+      expect(
+        screen.getByRole('button', { name: /add to cart/i }),
+      ).toBeInTheDocument();
+    });
   });
 });
