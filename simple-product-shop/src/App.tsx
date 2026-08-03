@@ -6,6 +6,7 @@ const sampleProduct: Product = {
   name: 'Wireless Headphones',
   price: 59.9,
   image: 'https://picsum.photos/seed/headphones/400/300',
+  description: 'Noise-cancelling over-ear headphones with 30h battery.',
 };
 
 function App() {

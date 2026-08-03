@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(export PATH=\"$PATH:/c/Users/Usuario/AppData/Roaming/npm\")",
-      "Bash(pnpm install *)"
+      "Bash(pnpm install *)",
+      "Bash(pnpm build *)"
     ]
   }
 }
