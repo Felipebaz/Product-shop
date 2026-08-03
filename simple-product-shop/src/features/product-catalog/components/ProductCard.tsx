@@ -27,7 +27,11 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
     status === 'added' ? 'mt-2 bg-green-600 hover:bg-green-700' : 'mt-2';
 
   return (
-    <article className="rounded-lg shadow-md p-4 bg-white flex flex-col gap-2">
+    <article
+      data-testid="product-card"
+      data-product-id={product.id}
+      className="rounded-lg shadow-md p-4 bg-white flex flex-col gap-2"
+    >
       <img
         src={product.image}
         alt={product.name}

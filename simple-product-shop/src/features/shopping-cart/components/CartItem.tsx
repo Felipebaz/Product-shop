@@ -13,7 +13,11 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
   const canDecrease = quantity > 1;
 
   return (
-    <li className="flex items-center gap-4 p-4 border-b bg-white">
+    <li
+      data-testid="cart-item"
+      data-product-id={product.id}
+      className="flex items-center gap-4 p-4 border-b bg-white"
+    >
       <img
         src={product.image}
         alt={product.name}
@@ -33,7 +37,11 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
         >
           −
         </button>
-        <span aria-label="Quantity" className="w-6 text-center">
+        <span
+          aria-label="Quantity"
+          data-testid="cart-item-quantity"
+          className="w-6 text-center"
+        >
           {quantity}
         </span>
         <button

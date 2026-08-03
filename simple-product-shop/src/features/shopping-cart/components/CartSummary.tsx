@@ -29,7 +29,7 @@ export function CartSummary({
 
       <div className="flex justify-between text-gray-700">
         <span>Subtotal</span>
-        <span>{formatPrice(subtotal)}</span>
+        <span data-testid="cart-subtotal">{formatPrice(subtotal)}</span>
       </div>
 
       {discountBreakdown.map((entry) => (
@@ -46,7 +46,7 @@ export function CartSummary({
 
       <div className="flex justify-between text-lg font-bold">
         <span>Total</span>
-        <span>{formatPrice(total)}</span>
+        <span data-testid="cart-total">{formatPrice(total)}</span>
       </div>
 
       {showPromo && (

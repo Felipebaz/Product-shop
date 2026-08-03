@@ -9,7 +9,10 @@
       "Bash(pnpm test:run ProductCard)",
       "Bash(pnpm test:run BulkDiscountStrategy)",
       "Bash(pnpm test:run DiscountCalculator)",
-      "Bash(pnpm test:run)"
+      "Bash(pnpm test:run)",
+      "Bash(pnpm exec *)",
+      "Bash(pnpm test:e2e)",
+      "Bash(pnpm lint *)"
     ]
   }
 }
