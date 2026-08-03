@@ -230,7 +230,6 @@ pnpm test ProductCard
 ---
 
 ## Paso 6: Ver en Browser
-
 **Prompt para la IA:**
 ```
 Modifica App.tsx para mostrar un ProductCard de prueba.
