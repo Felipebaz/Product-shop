@@ -1,3 +1,3 @@
-export function formatPrice(price: number): string {
-  return `$${price.toFixed(2)}`;
-}
+export { formatPrice } from './formatPrice';
+export { calculateSubtotal } from './calculateSubtotal';
+export { calculateBulkDiscount } from './calculateBulkDiscount';
