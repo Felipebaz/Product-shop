@@ -6,7 +6,10 @@
       "Bash(pnpm build *)",
       "Bash(pnpm test:run CartItem)",
       "Bash(pnpm test:run CartContext)",
-      "Bash(pnpm test:run ProductCard)"
+      "Bash(pnpm test:run ProductCard)",
+      "Bash(pnpm test:run BulkDiscountStrategy)",
+      "Bash(pnpm test:run DiscountCalculator)",
+      "Bash(pnpm test:run)"
     ]
   }
 }

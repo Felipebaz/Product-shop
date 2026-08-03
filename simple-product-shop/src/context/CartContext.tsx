@@ -2,10 +2,20 @@ import { useEffect, useMemo, useReducer, useRef, type ReactNode } from 'react';
 import type { CartItem, Product } from '@/shared/types';
 import { calculateSubtotal } from '@/shared/utils';
 import {
+  BulkDiscountStrategy,
+  DiscountCalculator,
+  OrderDiscountStrategy,
+} from '@/shared/strategies';
+import {
   CART_STORAGE_KEY,
   CartContext,
   type CartContextValue,
 } from './CartContextValue';
+
+const discountCalculator = new DiscountCalculator([
+  new BulkDiscountStrategy(),
+  new OrderDiscountStrategy(),
+]);
 
 type Action =
   | { type: 'ADD_ITEM'; product: Product }
@@ -63,19 +73,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
   }, [items]);
 
-  const value = useMemo<CartContextValue>(
-    () => ({
+  const value = useMemo<CartContextValue>(() => {
+    const subtotal = calculateSubtotal(items);
+    const discountBreakdown = discountCalculator.getBreakdown(items, subtotal);
+    const discount = discountBreakdown.reduce((s, e) => s + e.amount, 0);
+    return {
       items,
       itemCount: items.reduce((n, i) => n + i.quantity, 0),
-      subtotal: calculateSubtotal(items),
+      subtotal,
+      discount,
+      total: subtotal - discount,
+      discountBreakdown,
       addItem: (product) => dispatch({ type: 'ADD_ITEM', product }),
       removeItem: (productId) => dispatch({ type: 'REMOVE_ITEM', productId }),
       updateQuantity: (productId, quantity) =>
         dispatch({ type: 'UPDATE_QUANTITY', productId, quantity }),
       clearCart: () => dispatch({ type: 'CLEAR_CART' }),
-    }),
-    [items],
-  );
+    };
+  }, [items]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

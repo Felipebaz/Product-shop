@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { act, renderHook } from '@testing-library/react';
 import type { Product } from '@/shared/types';
+import { BULK_DISCOUNT, ORDER_DISCOUNT } from '@/shared/constants/businessRules';
 import { CartProvider } from '@/context/CartContext';
 import { useCart } from '@/context/useCart';
 
@@ -112,6 +113,46 @@ describe('CartContext', () => {
       result.current.addItem(productB);
     });
     expect(result.current.subtotal).toBe(10 * 2 + 25 * 1);
+  });
+
+  it('exposes discount, total, and empty breakdown when no rule applies', () => {
+    const { result } = renderHook(() => useCart(), { wrapper });
+    act(() => result.current.addItem(productA));
+    expect(result.current.discount).toBe(0);
+    expect(result.current.total).toBe(result.current.subtotal);
+    expect(result.current.discountBreakdown).toEqual([]);
+  });
+
+  it('applies bulk discount in the computed values', () => {
+    const { result } = renderHook(() => useCart(), { wrapper });
+    act(() => {
+      for (let i = 0; i < BULK_DISCOUNT.MIN_QUANTITY; i++) {
+        result.current.addItem(productA);
+      }
+    });
+    const subtotal = productA.price * BULK_DISCOUNT.MIN_QUANTITY;
+    expect(result.current.subtotal).toBe(subtotal);
+    expect(result.current.discount).toBeCloseTo(subtotal * BULK_DISCOUNT.RATE);
+    expect(result.current.discountBreakdown[0].name).toBe('Bulk Discount');
+  });
+
+  it('stacks bulk and order discounts sequentially', () => {
+    const { result } = renderHook(() => useCart(), { wrapper });
+    const highPrice: Product = { ...productA, price: 25 };
+    act(() => {
+      for (let i = 0; i < BULK_DISCOUNT.MIN_QUANTITY; i++) {
+        result.current.addItem(highPrice);
+      }
+    });
+    const subtotal = 25 * BULK_DISCOUNT.MIN_QUANTITY;
+    const bulk = subtotal * BULK_DISCOUNT.RATE;
+    const order = (subtotal - bulk) * ORDER_DISCOUNT.RATE;
+    expect(result.current.discount).toBeCloseTo(bulk + order);
+    expect(result.current.total).toBeCloseTo(subtotal - bulk - order);
+    expect(result.current.discountBreakdown.map((e) => e.name)).toEqual([
+      'Bulk Discount',
+      'Order Discount',
+    ]);
   });
 
   it('persists state to localStorage and rehydrates on remount', () => {

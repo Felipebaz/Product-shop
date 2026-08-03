@@ -1,15 +1,22 @@
 import { formatPrice } from '@/shared/utils';
 import { Button } from '@/shared/components';
 import { ORDER_DISCOUNT } from '@/shared/constants/businessRules';
+import type { DiscountBreakdownEntry } from '@/shared/strategies';
 
 interface CartSummaryProps {
   subtotal: number;
   discount: number;
   total: number;
   itemCount: number;
+  discountBreakdown: DiscountBreakdownEntry[];
 }
 
-export function CartSummary({ subtotal, discount, total, itemCount }: CartSummaryProps) {
+export function CartSummary({
+  subtotal,
+  total,
+  itemCount,
+  discountBreakdown,
+}: CartSummaryProps) {
   const showPromo = subtotal < ORDER_DISCOUNT.MIN_SUBTOTAL;
   const missing = ORDER_DISCOUNT.MIN_SUBTOTAL - subtotal;
   const promoPct = Math.round(ORDER_DISCOUNT.RATE * 100);
@@ -25,12 +32,15 @@ export function CartSummary({ subtotal, discount, total, itemCount }: CartSummar
         <span>{formatPrice(subtotal)}</span>
       </div>
 
-      {discount > 0 && (
-        <div className="flex justify-between text-green-700">
-          <span>Discount</span>
-          <span>-{formatPrice(discount)}</span>
+      {discountBreakdown.map((entry) => (
+        <div
+          key={entry.name}
+          className="flex justify-between text-green-700 text-sm"
+        >
+          <span>{entry.name}</span>
+          <span>-{formatPrice(entry.amount)}</span>
         </div>
-      )}
+      ))}
 
       <hr className="border-gray-200" />
 

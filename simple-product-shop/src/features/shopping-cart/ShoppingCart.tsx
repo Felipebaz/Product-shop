@@ -2,7 +2,16 @@ import { useCart } from '@/context/useCart';
 import { CartItem, CartSummary } from './components';
 
 export function ShoppingCart() {
-  const { items, itemCount, subtotal, updateQuantity, removeItem } = useCart();
+  const {
+    items,
+    itemCount,
+    subtotal,
+    discount,
+    total,
+    discountBreakdown,
+    updateQuantity,
+    removeItem,
+  } = useCart();
   const isEmpty = items.length === 0;
 
   return (
@@ -36,9 +45,10 @@ export function ShoppingCart() {
           </ul>
           <CartSummary
             subtotal={subtotal}
-            discount={0}
-            total={subtotal}
+            discount={discount}
+            total={total}
             itemCount={itemCount}
+            discountBreakdown={discountBreakdown}
           />
         </>
       )}
