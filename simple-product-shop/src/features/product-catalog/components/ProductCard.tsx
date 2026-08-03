@@ -16,7 +16,8 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         className="w-full h-40 object-cover rounded"
       />
       <h3 className="font-semibold text-lg">{product.name}</h3>
-      <p className="text-gray-700">{formatPrice(product.price)}</p>
+      <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
+      <p className="text-gray-700 font-medium">{formatPrice(product.price)}</p>
       <Button onClick={() => onAddToCart(product)} className="mt-2">
         Add to Cart
       </Button>
