@@ -39,7 +39,7 @@ export class ShoppingCartPage {
 
   async removeItem(productName: string) {
     await this.getItem(productName)
-      .getByRole('button', { name: /remove item/i })
+      .getByRole('button', { name: /remove .* from cart/i })
       .click();
   }
 

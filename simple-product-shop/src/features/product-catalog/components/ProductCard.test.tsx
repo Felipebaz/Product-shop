@@ -47,11 +47,13 @@ describe('ProductCard', () => {
       vi.useRealTimers();
     });
 
-    it('shows "Added!" for 1.5s after clicking, then reverts to "Add to Cart"', () => {
+    it('shows "Added!" for 1.5s after clicking, then reverts to "Add to Cart"', async () => {
       vi.useFakeTimers();
       render(<ProductCard product={product} onAddToCart={() => {}} />);
 
-      fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+      });
       expect(screen.getByRole('button', { name: /added/i })).toBeInTheDocument();
 
       act(() => {
@@ -60,6 +62,60 @@ describe('ProductCard', () => {
       expect(
         screen.getByRole('button', { name: /add to cart/i }),
       ).toBeInTheDocument();
+    });
+
+    it('shows "Adding..." while the add is in flight', async () => {
+      let release!: () => void;
+      const onAddToCart = vi.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            release = resolve;
+          }),
+      );
+      render(<ProductCard product={product} onAddToCart={onAddToCart} />);
+
+      fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+
+      expect(
+        await screen.findByRole('button', { name: /adding/i }),
+      ).toBeInTheDocument();
+
+      await act(async () => {
+        release();
+      });
+      expect(screen.getByRole('button', { name: /added/i })).toBeInTheDocument();
+    });
+
+    it('disables the button while the add is in flight', async () => {
+      let release!: () => void;
+      const onAddToCart = vi.fn(
+        () =>
+          new Promise<void>((resolve) => {
+            release = resolve;
+          }),
+      );
+      render(<ProductCard product={product} onAddToCart={onAddToCart} />);
+
+      fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+
+      expect(await screen.findByRole('button', { name: /adding/i })).toBeDisabled();
+
+      await act(async () => {
+        release();
+      });
+    });
+
+    it('offers a retry when adding fails', async () => {
+      const onAddToCart = vi.fn().mockRejectedValue(new Error('network down'));
+      render(<ProductCard product={product} onAddToCart={onAddToCart} />);
+
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: /add to cart/i }));
+      });
+
+      const button = screen.getByRole('button', { name: /failed/i });
+      expect(button).toBeInTheDocument();
+      expect(button).toBeEnabled();
     });
   });
 });

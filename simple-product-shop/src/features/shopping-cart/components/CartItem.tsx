@@ -32,7 +32,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
       <div className="flex items-center gap-2">
         <button
           type="button"
-          aria-label={UI_TEXT.decreaseQuantity}
+          aria-label={UI_TEXT.decreaseQuantity(product.name)}
           disabled={!canDecrease}
           onClick={() => onUpdateQuantity(quantity - 1)}
           className="w-8 h-8 rounded border disabled:opacity-40 hover:bg-gray-100"
@@ -48,7 +48,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
         </span>
         <button
           type="button"
-          aria-label={UI_TEXT.increaseQuantity}
+          aria-label={UI_TEXT.increaseQuantity(product.name)}
           onClick={() => onUpdateQuantity(quantity + 1)}
           className="w-8 h-8 rounded border hover:bg-gray-100"
         >
@@ -58,7 +58,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
       <p className="w-20 text-right font-semibold">{formatPrice(lineTotal)}</p>
       <button
         type="button"
-        aria-label={UI_TEXT.removeItem}
+        aria-label={UI_TEXT.removeItem(product.name)}
         onClick={onRemove}
         className="text-red-600 hover:text-red-700 px-2"
       >

@@ -1,4 +1,5 @@
 import { useCart } from '@/context/useCart';
+import { formatPrice } from '@/shared/utils';
 import { UI_TEXT } from '@/shared/constants/ui';
 import { CartItem, CartSummary } from './components';
 
@@ -26,6 +27,10 @@ export function ShoppingCart() {
           {itemCount}
         </span>
       </h2>
+
+      <p className="sr-only" aria-live="polite">
+        {UI_TEXT.cartUpdate(itemCount, formatPrice(total))}
+      </p>
 
       {isEmpty ? (
         <div className="bg-white rounded-lg p-8 text-center text-gray-500">

@@ -1,8 +1,11 @@
+import { useCallback, useState } from 'react';
 import { CartProvider } from '@/context/CartContext';
 import { useCart } from '@/context/useCart';
 import { ProductCatalog } from '@/features/product-catalog/ProductCatalog';
 import { ShoppingCart } from '@/features/shopping-cart/ShoppingCart';
 import { LoginDemo } from '@/features/auth/LoginDemo';
+import { Toast } from '@/shared/components';
+import type { Product } from '@/shared/types';
 import { UI_TEXT } from '@/shared/constants/ui';
 
 function Header() {
@@ -29,11 +32,23 @@ function Header() {
 
 function Shell() {
   const { addItem } = useCart();
+  const [toast, setToast] = useState<string | null>(null);
+
+  const handleAddToCart = useCallback(
+    (product: Product) => {
+      addItem(product);
+      setToast(`${product.name} added to cart`);
+    },
+    [addItem],
+  );
+
+  const dismissToast = useCallback(() => setToast(null), []);
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
       <main className="mx-auto max-w-6xl px-6 py-8 grid gap-8 lg:grid-cols-[1fr_340px]">
-        <ProductCatalog onAddToCart={addItem} />
+        <ProductCatalog onAddToCart={handleAddToCart} />
         <aside className="lg:sticky lg:top-24 h-fit flex flex-col gap-4">
           <ShoppingCart />
           <details className="rounded-lg bg-white shadow">
@@ -46,6 +61,12 @@ function Shell() {
           </details>
         </aside>
       </main>
+
+      {toast && (
+        <div className="fixed bottom-4 right-4 z-20 max-w-sm">
+          <Toast message={toast} onClose={dismissToast} />
+        </div>
+      )}
     </div>
   );
 }
