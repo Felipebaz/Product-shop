@@ -8,12 +8,33 @@ import { Toast } from '@/shared/components';
 import type { Product } from '@/shared/types';
 import { UI_TEXT } from '@/shared/constants/ui';
 
+// An error boundary only catches throws during render. A throw inside onClick
+// escapes to window.onerror, so flip state and throw on the next render instead.
+function TestErrorButton() {
+  const [crash, setCrash] = useState(false);
+
+  if (crash) {
+    throw new Error('Test error from React');
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setCrash(true)}
+      className="bg-red-500 text-white px-2 py-1 text-sm rounded hover:bg-red-600"
+    >
+      Test Error
+    </button>
+  );
+}
+
 function Header() {
   const { itemCount } = useCart();
   return (
     <header className="bg-white shadow sticky top-0 z-10">
       <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Simple Product Shop</h1>
+        {import.meta.env.DEV && <TestErrorButton />}
         <div className="relative" aria-label="Cart">
           <span className="text-2xl" aria-hidden="true">🛒</span>
           {itemCount > 0 && (

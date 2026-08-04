@@ -1,9 +1,11 @@
 import { useId, useState, type FormEvent } from 'react';
+import * as Sentry from '@sentry/react';
 import { validatePassword } from '@/shared/utils';
 import { Button } from '@/shared/components';
 import { PasswordInput } from './components/PasswordInput';
 
 const DEMO_EMAIL = 'demo@example.com';
+const DEMO_USER_ID = 'demo-user-123';
 const MAX_ATTEMPTS = 3;
 // Dot excluded from the domain classes so the pattern cannot backtrack (ReDoS-safe)
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
@@ -28,10 +30,12 @@ export function LoginDemo() {
     if (!canSubmit) return;
 
     if (email === DEMO_EMAIL) {
+      Sentry.setUser({ id: DEMO_USER_ID, email });
       setStatus('success');
       return;
     }
 
+    Sentry.setUser(null);
     const nextAttempts = attempts + 1;
     setAttempts(nextAttempts);
     setStatus(nextAttempts >= MAX_ATTEMPTS ? 'locked' : 'error');

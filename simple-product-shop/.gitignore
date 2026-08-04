@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Environment - .env.example is committed, real secrets are not
+.env
+.env.local
+.env.*.local
+
 # Playwright
 playwright-report/
 test-results/

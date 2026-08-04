@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useReducer, useRef, type ReactNode } from 'react';
+import * as Sentry from '@sentry/react';
 import type { CartItem, Product } from '@/shared/types';
 import { calculateSubtotal } from '@/shared/utils';
 import {
@@ -16,6 +17,10 @@ const discountCalculator = new DiscountCalculator([
   new BulkDiscountStrategy(),
   new OrderDiscountStrategy(),
 ]);
+
+function trackCartAction(message: string, data?: Record<string, unknown>) {
+  Sentry.addBreadcrumb({ category: 'cart', message, level: 'info', data });
+}
 
 type Action =
   | { type: 'ADD_ITEM'; product: Product }
@@ -84,11 +89,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
       discount,
       total: subtotal - discount,
       discountBreakdown,
-      addItem: (product) => dispatch({ type: 'ADD_ITEM', product }),
-      removeItem: (productId) => dispatch({ type: 'REMOVE_ITEM', productId }),
-      updateQuantity: (productId, quantity) =>
-        dispatch({ type: 'UPDATE_QUANTITY', productId, quantity }),
-      clearCart: () => dispatch({ type: 'CLEAR_CART' }),
+      addItem: (product) => {
+        trackCartAction(`Added ${product.name} to cart`, {
+          productId: product.id,
+          productName: product.name,
+        });
+        dispatch({ type: 'ADD_ITEM', product });
+      },
+      removeItem: (productId) => {
+        trackCartAction(`Removed item ${productId} from cart`, { productId });
+        dispatch({ type: 'REMOVE_ITEM', productId });
+      },
+      updateQuantity: (productId, quantity) => {
+        trackCartAction(`Updated ${productId} quantity to ${quantity}`, {
+          productId,
+          quantity,
+        });
+        dispatch({ type: 'UPDATE_QUANTITY', productId, quantity });
+      },
+      clearCart: () => {
+        trackCartAction('Cleared cart');
+        dispatch({ type: 'CLEAR_CART' });
+      },
     };
   }, [items]);
 
