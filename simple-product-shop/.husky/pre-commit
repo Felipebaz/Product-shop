@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Git runs hooks from the repository root, but package.json lives one level in.
+cd "$(dirname "$0")/.." || exit 1
+
+echo "🔍 Running pre-commit checks..."
+
+echo "📝 Checking lint..."
+pnpm lint || exit 1
+
+echo "🔷 Checking types..."
+pnpm typecheck || exit 1
+
+echo "✅ Pre-commit checks passed!"

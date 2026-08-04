@@ -15,7 +15,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "quality": "pnpm lint && pnpm typecheck && pnpm test:run",
-    "verify": "pnpm quality && pnpm test:e2e && pnpm build"
+    "verify": "pnpm quality && pnpm test:e2e && pnpm build",
+    "prepare": "git -C .. config core.hooksPath simple-product-shop/.husky || true"
   },
   "dependencies": {
     "@sentry/react": "^10.69.0",
@@ -40,6 +41,7 @@
     "eslint-plugin-react-refresh": "^0.5.3",
     "eslint-plugin-sonarjs": "^4.2.0",
     "globals": "^17.9.0",
+    "husky": "^9.1.7",
     "jsdom": "^30.0.1",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",

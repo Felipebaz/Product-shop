@@ -17,6 +17,9 @@ dist-ssr
 .env.local
 .env.*.local
 
+# Test output
+coverage/
+
 # Playwright
 playwright-report/
 test-results/
