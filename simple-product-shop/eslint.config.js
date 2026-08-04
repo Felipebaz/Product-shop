@@ -54,6 +54,8 @@ export default defineConfig([
       // Test files repeat labels and setup blocks by design
       'sonarjs/no-duplicate-string': 'off',
       'sonarjs/no-identical-functions': 'off',
+      // Fixture credentials are not secrets; the rule stays on for src/
+      'sonarjs/no-hardcoded-passwords': 'off',
     },
   },
   {

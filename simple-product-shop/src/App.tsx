@@ -2,6 +2,7 @@ import { CartProvider } from '@/context/CartContext';
 import { useCart } from '@/context/useCart';
 import { ProductCatalog } from '@/features/product-catalog/ProductCatalog';
 import { ShoppingCart } from '@/features/shopping-cart/ShoppingCart';
+import { LoginDemo } from '@/features/auth/LoginDemo';
 import { UI_TEXT } from '@/shared/constants/ui';
 
 function Header() {
@@ -33,8 +34,16 @@ function Shell() {
       <Header />
       <main className="mx-auto max-w-6xl px-6 py-8 grid gap-8 lg:grid-cols-[1fr_340px]">
         <ProductCatalog onAddToCart={addItem} />
-        <aside className="lg:sticky lg:top-24 h-fit">
+        <aside className="lg:sticky lg:top-24 h-fit flex flex-col gap-4">
           <ShoppingCart />
+          <details className="rounded-lg bg-white shadow">
+            <summary className="cursor-pointer px-4 py-3 font-medium">
+              Login demo
+            </summary>
+            <div className="border-t">
+              <LoginDemo />
+            </div>
+          </details>
         </aside>
       </main>
     </div>
