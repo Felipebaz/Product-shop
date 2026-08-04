@@ -2,6 +2,7 @@ import { CartProvider } from '@/context/CartContext';
 import { useCart } from '@/context/useCart';
 import { ProductCatalog } from '@/features/product-catalog/ProductCatalog';
 import { ShoppingCart } from '@/features/shopping-cart/ShoppingCart';
+import { UI_TEXT } from '@/shared/constants/ui';
 
 function Header() {
   const { itemCount } = useCart();
@@ -14,7 +15,7 @@ function Header() {
           {itemCount > 0 && (
             <span
               className="absolute -top-1 -right-2 bg-blue-600 text-white text-xs rounded-full px-1.5"
-              aria-label={`${itemCount} items in cart`}
+              aria-label={UI_TEXT.cartBadgeLabel(itemCount)}
             >
               {itemCount}
             </span>

@@ -23,13 +23,13 @@ export class DiscountCalculator {
     const breakdown: DiscountBreakdownEntry[] = [];
     let remaining = subtotal;
     for (const strategy of this.strategies) {
-      if (strategy.isApplicable(items, remaining)) {
-        const amount = strategy.calculate(items, remaining);
-        if (amount > 0) {
-          breakdown.push({ name: strategy.name, amount });
-          remaining -= amount;
-        }
-      }
+      if (!strategy.isApplicable(items, remaining)) continue;
+
+      const amount = strategy.calculate(items, remaining);
+      if (amount <= 0) continue;
+
+      breakdown.push({ name: strategy.name, amount });
+      remaining -= amount;
     }
     return breakdown;
   }

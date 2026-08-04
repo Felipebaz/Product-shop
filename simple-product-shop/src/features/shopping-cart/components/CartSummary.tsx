@@ -1,6 +1,7 @@
 import { formatPrice } from '@/shared/utils';
 import { Button } from '@/shared/components';
 import { ORDER_DISCOUNT } from '@/shared/constants/businessRules';
+import { UI_TEXT } from '@/shared/constants/ui';
 import type { DiscountBreakdownEntry } from '@/shared/strategies';
 
 interface CartSummaryProps {
@@ -55,7 +56,7 @@ export function CartSummary({
         </p>
       )}
 
-      <Button className="w-full mt-2">Checkout</Button>
+      <Button className="w-full mt-2">{UI_TEXT.checkout}</Button>
     </aside>
   );
 }

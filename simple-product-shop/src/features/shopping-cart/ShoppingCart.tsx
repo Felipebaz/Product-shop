@@ -1,4 +1,5 @@
 import { useCart } from '@/context/useCart';
+import { UI_TEXT } from '@/shared/constants/ui';
 import { CartItem, CartSummary } from './components';
 
 export function ShoppingCart() {
@@ -15,12 +16,12 @@ export function ShoppingCart() {
   const isEmpty = items.length === 0;
 
   return (
-    <section className="flex flex-col gap-4" aria-label="Shopping cart">
+    <section className="flex flex-col gap-4" aria-label={UI_TEXT.cartRegion}>
       <h2 className="text-xl font-semibold flex items-center gap-2">
-        Shopping Cart
+        {UI_TEXT.cartHeading}
         <span
           className="bg-blue-600 text-white text-xs rounded-full px-2 py-0.5"
-          aria-label={`${itemCount} items in cart`}
+          aria-label={UI_TEXT.cartBadgeLabel(itemCount)}
         >
           {itemCount}
         </span>
@@ -29,7 +30,7 @@ export function ShoppingCart() {
       {isEmpty ? (
         <div className="bg-white rounded-lg p-8 text-center text-gray-500">
           <p className="text-4xl mb-2" aria-hidden="true">🛒</p>
-          <p>Your cart is empty</p>
+          <p>{UI_TEXT.emptyCart}</p>
         </div>
       ) : (
         <>

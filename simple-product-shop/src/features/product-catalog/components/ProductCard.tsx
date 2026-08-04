@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Product } from '@/shared/types';
 import { formatPrice } from '@/shared/utils';
 import { Button } from '@/shared/components';
+import { ADD_TO_CART_FEEDBACK_MS, UI_TEXT } from '@/shared/constants/ui';
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +14,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
   useEffect(() => {
     if (status !== 'added') return;
-    const t = setTimeout(() => setStatus('idle'), 1500);
+    const t = setTimeout(() => setStatus('idle'), ADD_TO_CART_FEEDBACK_MS);
     return () => clearTimeout(t);
   }, [status]);
 
@@ -22,7 +23,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
     setStatus('added');
   };
 
-  const label = status === 'added' ? 'Added!' : 'Add to Cart';
+  const label = status === 'added' ? UI_TEXT.addedToCart : UI_TEXT.addToCart;
   const btnClass =
     status === 'added' ? 'mt-2 bg-green-600 hover:bg-green-700' : 'mt-2';
 
